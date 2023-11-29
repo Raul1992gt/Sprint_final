@@ -1,6 +1,6 @@
 import os
 
-from app import create_app
+from app import create_app, db
 from app.config import config_dict
 
 
