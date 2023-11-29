@@ -1,4 +1,8 @@
-FROM python:3.9-slim
+FROM python:3.9
+
+# Instalar el cliente PostgreSQL
+RUN apt-get update && \
+    apt-get install -y postgresql-client
 
 WORKDIR /app
 
@@ -8,10 +12,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 5000
 
+# Configurar Flask para producción
 ENV FLASK_APP=run.py
 ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=development
+ENV FLASK_ENV=production
 
 CMD ["python", "run.py"]
