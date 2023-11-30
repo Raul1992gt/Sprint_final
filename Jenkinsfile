@@ -13,12 +13,12 @@ pipeline {
         }
 		
 		stage('Install Docker Compose') {
-		steps {
-			script {
-				sh 'sudo apt-get install docker-compose -y'  
+			steps {
+				script {
+					sh 'sudo apt-get install docker-compose -y'  
+				}
 			}
 		}
-}
 
         stage('Build Docker Image') {
             steps {
