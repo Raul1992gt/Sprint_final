@@ -5,6 +5,7 @@ pipeline {
         PYTHON_VERSION = '3.8.12' // ajusta según tu entorno
         PYENV_ROOT = "/var/jenkins_home/tools/pyenv"
         PATH = "/var/jenkins_home/tools/pyenv/shims:/var/jenkins_home/tools/pyenv/bin:$PATH"
+        DEBIAN_FRONTEND = "noninteractive"
     }
 
     stages {
@@ -12,8 +13,7 @@ pipeline {
             steps {
                 script {
                     sh 'apt-get update && apt-get install -y patch'
-					sh 'sudo chmod 755 /var/lib/apt/lists/partial'
-					sh 'sudo apt-get update'
+                    sh 'apt-get update' // Actualiza nuevamente después de instalar 'patch'
                 }
             }
         }
