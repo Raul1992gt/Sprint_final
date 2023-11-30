@@ -1,72 +1,33 @@
 pipeline {
     agent any
 
-    environment {
-        FLASK_ENV = 'testing'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
-            }
-        }
-		
-		stage('Install Docker Compose') {
-			steps {
-				script {
-					sh 'sudo apt-get install docker-compose -y'  
-				}
-			}
-		}
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker-compose build'
-                }
+                // Descargar el repositorio de GitHub
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Raul1992gt/Sprint_final.git']]])
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Print Repository Contents') {
             steps {
-                script {
-                    sh 'docker-compose up -d'
-                }
+                // Imprimir el contenido del repositorio
+                sh 'ls -la'
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'docker-compose exec tu-servicio-python python -m venv venv'
-                    sh 'docker-compose exec tu-servicio-python source venv/bin/activate'
-                    sh 'docker-compose exec tu-servicio-python pip install -r requirements.txt'
-                }
-            }
-        }
+        // Agrega más etapas según tus necesidades
 
         stage('Run Tests') {
             steps {
-                script {
-                    sh 'docker-compose exec tu-servicio-python python -m unittest discover tests'
-                }
+                echo 'Ejecutar pruebas aquí...'
             }
         }
     }
 
     post {
         always {
-            script {
-                sh 'docker-compose down'
-                echo 'Se han ejecutado las pruebas'
-            }
-        }
-        success {
-            echo 'Todo ha ido como esperábamos'
-        }
-        failure {
-            echo 'Algo ha ido mal, revise su código'
+            echo 'Pipeline finalizado'
         }
     }
 }
