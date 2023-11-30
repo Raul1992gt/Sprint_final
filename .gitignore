@@ -1,0 +1,12 @@
+# Ignorar el directorio __pycache__ dentro de app/
+app/__pycache__/
+
+# Ignorar el directorio migrations/
+migrations/
+
+# Ignorar el directorio venv/
+venv/
+
+# Ignorar archivos específicos
+Final\ bootcamp/docker_ydockeR_compose.docx
+Final\ bootcamp/Nuevo\ Documento\ de\ Mircrosoft\ Word.docx
