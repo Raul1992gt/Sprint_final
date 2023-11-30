@@ -2,7 +2,9 @@ pipeline {
     agent any
 	
 	environment {
-        PYTHON_VERSION = '3.8'
+        PYTHON_VERSION = '3.8.12' // ajusta según tu entorno
+        PYENV_ROOT = "/var/jenkins_home/tools/pyenv"
+        PATH = "/var/jenkins_home/tools/pyenv/shims:/var/jenkins_home/tools/pyenv/bin:$PATH"
     }
 
     stages {
@@ -12,13 +14,12 @@ pipeline {
                     // Verifica si Python está instalado
                     def pythonInstalled = sh(script: "command -v python${PYTHON_VERSION}", returnStatus: true) == 0
 
-                    // Si no está instalado, instala Python localmente en el directorio de trabajo del pipeline
+                    // Si no está instalado, instala pyenv y Python
                     if (!pythonInstalled) {
-                        echo "Instalando Python ${PYTHON_VERSION}"
-                        sh "curl -O https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz"
-                        sh "tar -xvf Python-${PYTHON_VERSION}.tgz"
-                        sh "cd Python-${PYTHON_VERSION} && ./configure --prefix=/var/jenkins_home/tools/python && make && make install"
-                        sh "export PATH=/var/jenkins_home/tools/python/bin:$PATH"
+                        echo "Instalando pyenv y Python ${PYTHON_VERSION}"
+                        sh 'curl https://pyenv.run | bash'
+                        sh "pyenv install ${PYTHON_VERSION}"
+                        sh "pyenv global ${PYTHON_VERSION}"
                     }
                 }
             }
