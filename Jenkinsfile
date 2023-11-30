@@ -15,7 +15,7 @@ pipeline {
                     // Si no está instalado, instala Python localmente en el directorio de trabajo del pipeline
                     if (!pythonInstalled) {
                         echo "Instalando Python ${PYTHON_VERSION}"
-                        sh "wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz"
+                        sh "curl -O https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz"
                         sh "tar -xvf Python-${PYTHON_VERSION}.tgz"
                         sh "cd Python-${PYTHON_VERSION} && ./configure --prefix=/var/jenkins_home/tools/python && make && make install"
                         sh "export PATH=/var/jenkins_home/tools/python/bin:$PATH"
