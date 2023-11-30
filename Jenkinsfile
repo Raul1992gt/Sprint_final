@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-
     environment {
         FLASK_ENV = 'testing'
     }
@@ -16,6 +15,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                    sh 'python -m venv venv'
+                    sh 'source venv/bin/activate'
                     sh 'pip install -r requirements.txt'
                 }
             }
@@ -25,7 +26,7 @@ pipeline {
             steps {
                 script {
                     sh 'python -m unittest discover tests'
-				}
+                }
             }
         }
     }
