@@ -9,7 +9,15 @@ pipeline {
         stage('Install Python') {
             steps {
                 script {
-                    sh "command -v python${PYTHON_VERSION} || sudo apt-get install -y python${PYTHON_VERSION}"
+                    // Verifica si Python está instalado
+                    def pythonInstalled = sh(script: "command -v python${PYTHON_VERSION}", returnStatus: true) == 0
+
+                    // Si no está instalado, instala Python
+                    if (!pythonInstalled) {
+                        echo "Instalando Python ${PYTHON_VERSION}"
+                        sh "apt-get update"
+                        sh "apt-get install -y python${PYTHON_VERSION}"
+                    }
                 }
             }
         }
