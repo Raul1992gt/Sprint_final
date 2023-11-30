@@ -12,6 +12,8 @@ pipeline {
             steps {
                 script {
                     sh 'apt-get update && apt-get install -y patch'
+					sh 'sudo chmod 755 /var/lib/apt/lists/partial'
+					sh 'sudo apt-get update'
                 }
             }
         }
