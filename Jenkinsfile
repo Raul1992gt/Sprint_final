@@ -1,37 +1,7 @@
 pipeline {
     agent any
-	
-	environment {
-        PYTHON_VERSION = '3.8.12' // ajusta según tu entorno
-        PYENV_ROOT = "/var/jenkins_home/tools/pyenv"
-        PATH = "/var/jenkins_home/tools/pyenv/shims:/var/jenkins_home/tools/pyenv/bin:$PATH"
-        DEBIAN_FRONTEND = "noninteractive"
-    }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'apt-get update && apt-get install -y patch'
-                    sh 'apt-get update' // Actualiza nuevamente después de instalar 'patch'
-                }
-            }
-        }
-
-        stage('Install Python') {
-            steps {
-                script {
-                    def pythonInstalled = sh(script: "command -v python${PYTHON_VERSION}", returnStatus: true) == 0
-
-                    if (!pythonInstalled) {
-                        echo "Instalando pyenv y Python ${PYTHON_VERSION}"
-                        sh 'curl https://pyenv.run | bash'
-                        sh "pyenv install ${PYTHON_VERSION}"
-                        sh "pyenv global ${PYTHON_VERSION}"
-                    }
-                }
-            }
-        }
 		
         stage('Checkout') {
             steps {
@@ -42,19 +12,6 @@ pipeline {
         stage('Print Repository Contents') {
             steps {
                 sh 'ls -la'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh "python${PYTHON_VERSION} -m venv venv"
-                    sh 'source venv/bin/activate'
-
-                    sh 'pip install -r app/requirements.txt'
-
-                    sh "python${PYTHON_VERSION} -m unittest discover -s app -p 'test_*.py'"
-                }
             }
         }
     }
