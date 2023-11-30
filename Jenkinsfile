@@ -1,26 +1,40 @@
 pipeline {
     agent any
+	
+	environment {
+        PYTHON_VERSION = '3.8'
+    }
 
     stages {
+        stage('Install Python') {
+            steps {
+                script {
+                    sh "command -v python${PYTHON_VERSION} || sudo apt-get install -y python${PYTHON_VERSION}"
+                }
+            }
+        }
         stage('Checkout') {
             steps {
-                // Descargar el repositorio de GitHub
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Raul1992gt/Sprint_final.git']]])
             }
         }
 
         stage('Print Repository Contents') {
             steps {
-                // Imprimir el contenido del repositorio
                 sh 'ls -la'
             }
         }
 
-        // Agrega más etapas según tus necesidades
-
         stage('Run Tests') {
             steps {
-                echo 'Ejecutar pruebas aquí...'
+                script {
+                    sh "python${PYTHON_VERSION} -m venv venv"
+                    sh 'source venv/bin/activate'
+
+                    sh 'pip install -r app/requirements.txt'
+
+                    sh "python${PYTHON_VERSION} -m unittest discover -s app -p 'test_*.py'"
+                }
             }
         }
     }
