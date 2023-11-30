@@ -8,13 +8,19 @@ pipeline {
     }
 
     stages {
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'apt-get update && apt-get install -y patch'
+                }
+            }
+        }
+
         stage('Install Python') {
             steps {
                 script {
-                    // Verifica si Python está instalado
                     def pythonInstalled = sh(script: "command -v python${PYTHON_VERSION}", returnStatus: true) == 0
 
-                    // Si no está instalado, instala pyenv y Python
                     if (!pythonInstalled) {
                         echo "Instalando pyenv y Python ${PYTHON_VERSION}"
                         sh 'curl https://pyenv.run | bash'
