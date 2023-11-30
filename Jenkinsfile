@@ -15,7 +15,7 @@ pipeline {
 		stage('Install Docker Compose') {
 			steps {
 				script {
-					sh 'sudo apt-get install docker-compose -y'  
+					sh 'apt-get install docker-compose -y'  
 				}
 			}
 		}
