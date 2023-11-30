@@ -13,11 +13,11 @@ services:
     working_dir: /app
     depends_on:
       - database
+      - jenkins
 
   database:
     image: postgres:13
     container_name: sprint_final
-
     environment:
       POSTGRES_DB: sprint_final
       POSTGRES_USER: sprint_final
@@ -27,3 +27,12 @@ services:
     volumes:
       - ./datos_postgres:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: mi_servicio_jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
