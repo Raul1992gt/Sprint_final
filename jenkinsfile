@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Definir las variables de entorno necesarias
         FLASK_ENV = 'testing'
     }
 
@@ -23,7 +22,6 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Ejecutar tus pruebas de Python
                 script {
                     sh 'python -m unittest discover tests'
 				}
