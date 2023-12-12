@@ -18,7 +18,7 @@ Asegúrate de tener Docker y Docker Compose instalados en tu máquina antes de c
 1. Clona este repositorio:
 
     ```bash
-    git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/Raul1992gt/Sprint_final.git)
+    git clone https://github.com/Raul1992gt/Sprint_final.git
     cd tu-repositorio
     ```
 
