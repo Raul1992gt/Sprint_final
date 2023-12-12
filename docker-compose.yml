@@ -14,6 +14,8 @@ services:
     depends_on:
       - database
       - jenkins
+      - grafana
+      - prometheus
 
   database:
     image: postgres:13
@@ -36,3 +38,21 @@ services:
       - "50000:50000"
     volumes:
       - ./jenkins_home:/var/jenkins_home
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mi_servicio_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mi_servicio_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus_data:/etc/prometheus
